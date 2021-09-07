@@ -1,19 +1,41 @@
 import {useState} from 'react'
-
-const Form =()=>{
+import { v4 as uuidv4 } from 'uuid';
+const Form =({crearCita})=>{
 
    const [data, setData] = useState({mascota:'', propietario:'', fecha:'', tiempo:'', sintomas:''})
+   const [error, setError]= useState(false)
     const updateData = e =>{
         setData({
             ...data,
             [e.target.name]: e.target.value
         })
     }
+    
     const {mascota, propietario, fecha, tiempo, sintomas} = data
+    // validar formulario
+    const sentData = e =>{
+      e.preventDefault()
+      if(mascota.trim() === '', propietario.trim() === '', fecha.trim() === '', tiempo.trim() === '', sintomas.trim() === ''){
+        setError(true)
+        return; // para que no se ejecuta nada adicional
+      }
+     // Asignamos un id
+     setError(false)
+     const id= uuidv4()
+     //setData({...data, id}) // se está omitiendo ya que directo el id se pasa cuando lo envía
+     //setData({...data, id:uuidv4()})  Sería una segunda opción
+
+     // crear cita
+     crearCita({...data, id}) // se envía el id que se necesita
+    }
+
     return(
         <>
         <h2>Crear Cita</h2>
-        <form>
+        <form
+        onSubmit={sentData}
+        >
+            {error ? <p className='alerta-error'>Visualizamos campos vacíos</p>: null}
             <label>Nombre de Mascota</label>
             <input
                 type='text'
