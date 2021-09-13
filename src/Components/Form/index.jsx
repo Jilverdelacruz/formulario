@@ -1,5 +1,7 @@
 import {useState} from 'react'
 import { v4 as uuidv4 } from 'uuid';
+import PropTypes from 'prop-types'
+
 const Form =({crearCita})=>{
 
    const [data, setData] = useState({mascota:'', propietario:'', fecha:'', tiempo:'', sintomas:''})
@@ -15,7 +17,7 @@ const Form =({crearCita})=>{
     // validar formulario
     const sentData = e =>{
       e.preventDefault()
-      if(mascota.trim() === '', propietario.trim() === '', fecha.trim() === '', tiempo.trim() === '', sintomas.trim() === ''){
+      if(mascota.trim() === '' || propietario.trim() === '' || fecha.trim() === '' || tiempo.trim() === ''|| sintomas.trim() === ''){
         setError(true)
         return; // para que no se ejecuta nada adicional
       }
@@ -89,6 +91,10 @@ const Form =({crearCita})=>{
         
        
     )
+}
+
+Form.propTypes={
+    crearCita: PropTypes.func.isRequired
 }
 
 export default Form

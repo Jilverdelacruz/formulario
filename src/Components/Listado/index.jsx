@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 
 const Listado = ({cita, deleteCita}) =>{
     const {id, mascota, propietario, fecha, tiempo, sintomas}= cita
@@ -12,8 +13,11 @@ const Listado = ({cita, deleteCita}) =>{
          <p></p>
          <button className='button eliminar u-full-width' onClick={()=>deleteCita(id)}>Eliminar</button>
         </div>
-
-       
     )
+}
+
+Listado.propTypes={
+    cita: PropTypes.object.isRequired,
+    deleteCita: PropTypes.func.isRequired
 }
 export default Listado

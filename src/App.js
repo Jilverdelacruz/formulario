@@ -1,10 +1,24 @@
 import Form from './Components/Form' 
 import Listado from './Components/Listado' 
 import './App.css';
-import { useState} from 'react'
+import { useState, useEffect} from 'react'
 
 function App() {
- const [citas, setCitas] = useState([])
+
+let citasStorage = JSON.parse(localStorage.getItem('citas')) // obtiene lo que hay local storage , tiene que ser LET porque en ocasiones será un array vacío en otra  tendrá data
+if(!citasStorage){
+  citasStorage =[]
+}
+
+ const [citas, setCitas] = useState(citasStorage)
+/* useEffect
+useEffect(()=>{
+  console.log('listo')
+}, [citas])
+ */
+useEffect(()=>{ // se ejecutará la primera vez y cada vez que halla un cambios en citas
+  localStorage.setItem('citas', JSON.stringify(citas)) /* Enviando al local storage */
+}, [citas])
 
  const crearCita= cita =>{
    setCitas([ ...citas, cita])
@@ -14,6 +28,9 @@ function App() {
     const cita= citas.filter(cita=> cita.id !== id)
     setCitas(cita)
  }
+
+ const titulo = citas.length === 0 ? 'No hay Citas' : 'Administra tus citas'
+
   return (
     <>
       <h1>Administrador de Pacientes</h1>
@@ -25,9 +42,8 @@ function App() {
             />
           </div>
           <div className='one-half column'>
-          <h1>Administra tus citas</h1>
-            {citas.length === 0 ? <p className='alerta-error'>No hay Citas</p>:
-            citas.map((cita)=>
+          <h1>{titulo}</h1>
+            {citas.map((cita)=>
             <Listado
             key={cita.id}
             cita={cita}
